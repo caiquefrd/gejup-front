@@ -15,9 +15,9 @@ const Home: React.FC = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div style={containerStyles}>
-      <Card elevation={22} sx={{ width: '110%', maxWidth: 600, backgroundColor:'#F2F2F2'  }}>
+      <Card elevation={22} sx={{ width: '900px', maxWidth: 1200, backgroundColor:'#F2F2F2'  }}>
       <CardContent>
-        <CalorieCounter calories={2000} percentage={75} />
+        <CalorieCounter calories={1800} percentage={75} />
         <AddMealButton onClick={() => {}} />
         <MealSection title="Café da Manhã" />
         <MealSection title="Almoço" />
