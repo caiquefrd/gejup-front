@@ -4,6 +4,7 @@ export const containerStyles = {
     alignItems: 'center',
     padding: '20px',
     maxWidth: '400px',
-    margin: '0 auto'
+    margin: '0 auto',
+    marginTop: '50px',
   };
   

@@ -7,6 +7,7 @@ import AddMealButton from '../components/AddMealButton';
 import MealSection from '../components/MealSection';
 import MacroProgressBar from '../components/MacroProgressBar';
 import { containerStyles } from '../styles/AppStyles';
+import { Card, CardContent } from '@mui/material';
 
 
 const Home: React.FC = () => {
@@ -14,12 +15,16 @@ const Home: React.FC = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div style={containerStyles}>
+      <Card elevation={22} sx={{ width: '110%', maxWidth: 600, backgroundColor:'#F2F2F2'  }}>
+      <CardContent>
         <CalorieCounter calories={2000} percentage={75} />
         <AddMealButton onClick={() => {}} />
         <MealSection title="Café da Manhã" />
         <MealSection title="Almoço" />
         <MealSection title="Jantar" />
         <MacroProgressBar />
+        </CardContent>
+      </Card>
       </div>
     </ThemeProvider>
   );
