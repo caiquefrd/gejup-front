@@ -5,6 +5,6 @@ export const containerStyles = {
     padding: '20px',
     maxWidth: '400px',
     margin: '0 auto',
-    marginTop: '50px',
+    
   };
   

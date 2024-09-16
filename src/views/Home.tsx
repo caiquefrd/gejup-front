@@ -8,12 +8,14 @@ import MealSection from '../components/MealSection';
 import MacroProgressBar from '../components/MacroProgressBar';
 import { containerStyles } from '../styles/AppStyles';
 import { Card, CardContent } from '@mui/material';
+import SideBar from '../components/SideBar';
 
 
 const Home: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <SideBar></SideBar>
       <div style={containerStyles}>
       <Card elevation={22} sx={{ width: '900px', maxWidth: 1200, backgroundColor:'#F2F2F2'  }}>
       <CardContent>
@@ -26,6 +28,7 @@ const Home: React.FC = () => {
         </CardContent>
       </Card>
       </div>
+      
     </ThemeProvider>
   );
 };
