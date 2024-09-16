@@ -68,7 +68,7 @@ const MacroTracker: React.FC = () => {
 
   return (
     <Box sx={{ padding: 2 }}>
-      <Typography variant="h6">Meta de Macronutrientes</Typography>
+      <Typography variant="h6" color='secondary' fontWeight={600}>Meta de Macronutrientes</Typography>
       <MacroProgressBar
         label="Proteínas"
         value={macros.protein.value}
