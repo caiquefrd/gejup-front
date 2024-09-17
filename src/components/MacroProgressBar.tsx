@@ -13,7 +13,7 @@ const MacroProgressBar: React.FC<MacroProgressBarProps> = ({ label, value, targe
   const progress = (value / targetValue) * 100;
 
   return (
-    <Paper sx={{ padding: 2, marginBottom: 2, boxShadow: 3 }}>
+    <Paper  sx={{ padding: 2, marginBottom: 2, boxShadow: 8 }}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Typography variant="body1" sx={{ marginBottom: 1 }}>{label}</Typography>
         <Box sx={{ position: 'relative' }}>
@@ -31,7 +31,7 @@ const MacroProgressBar: React.FC<MacroProgressBarProps> = ({ label, value, targe
             alignItems: 'center',
             padding: 1
           }}>
-            <Typography variant="body2">{value}g / {targetValue}g</Typography>
+            <Typography variant="body2" fontWeight={600} sx={{mt:'18px', fontSize: '13px'}}>{value}g | {targetValue}g</Typography>
           </Box>
         </Box>
       </Box>
