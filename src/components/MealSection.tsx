@@ -9,7 +9,7 @@ interface MealSectionProps {
 
 const MealSection: React.FC<MealSectionProps> = ({ title, children }) => {
   return (
-    <Accordion  sx={{ backgroundColor:'#F1ECEC', color:'secondary', width:'100%', borderRadius:'8px' }}>
+    <Accordion  sx={{ backgroundColor:'#E3DEDE', color:'secondary', width:'100%', borderRadius:'8px', boxShadow:8 }}>
       <AccordionSummary sx={{ color:'#024059'}} expandIcon={<ExpandMoreIcon sx={{color:'#024059'}}/>}>
         <Typography sx={{ fontWeight:'600' }}>{title}</Typography>
       </AccordionSummary>
