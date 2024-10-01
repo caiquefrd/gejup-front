@@ -61,7 +61,7 @@ const GoalTracker: React.FC<GoalProps> = ({ type, goal, current, isWeightGoal, o
   const animationData = {
     loop: true,
     autoplay: true,
-    animationData: animationMap[type] || waterAnimation, // Usa a animação correspondente ao tipo
+    animationData: animationMap[type] || waterAnimation, 
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice"
     }
