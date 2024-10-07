@@ -3,14 +3,14 @@ import { Box, Typography, Button } from '@mui/material';
 import TextInput from '../components/TextInput';
 import Logo from '../components/Logo';
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = async() => {
-    console.log('Login clicked', { username, password });
+  const handleRegister = async() => {
+    console.log('Registred', { username, password });
     try {
-      const response = await fetch('http://localhost:3000/login', {
+      const response = await fetch('http://localhost:3000/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -20,9 +20,9 @@ const Login: React.FC = () => {
   
       if (response.ok) {
         const data = await response.json();
-        console.log('Login successful:', data);
+        console.log('Register successful:', data);
       } else {
-        console.error('Login failed');
+        console.error('Register failed');
         }
     } catch (error) {
       console.error('Error:', error);
@@ -36,10 +36,10 @@ const Login: React.FC = () => {
       justifyContent="center"
       height="100vh"
     >
-      <Box bgcolor="#0E3B46" p={4} borderRadius={3} boxShadow={3} width={300}>
+      <Box bgcolor="#0E3B46" p={4} borderRadius={8} boxShadow={3} width={300}>
         <Logo />
         <Typography variant="h5" align="center" mb={2} style={{ color: '#FFFFFF' }}>
-          Login
+          Cadastrar
         </Typography>
         <TextInput label="E-mail" value={username} onChange={(e) => setUsername(e.target.value)} />
         <TextInput label="Senha" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
@@ -47,17 +47,14 @@ const Login: React.FC = () => {
           variant="contained"
           color="primary"
           fullWidth
-          onClick={handleLogin}
+          onClick={handleRegister}
           style={{ marginTop: '16px', backgroundColor: '#00C58E', borderRadius: 15, height:'40px' }}
         >
-          Entrar
+          Cadastre-se
         </Button>
-        <Typography align="center" variant="body2" mt={3} style={{ color: '#FFFFFF' }}>
-          <a href="#" style={{ color: '#FFFFFF', textDecoration: 'none' }}>cadastre-se</a>
-        </Typography>
       </Box>
     </Box>
   );
 };
 
-export default Login;
+export default Register;
