@@ -7,6 +7,6 @@ import Register from './components/RegisterForm.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Register/>
+    <Login/>
   </StrictMode>
 )
