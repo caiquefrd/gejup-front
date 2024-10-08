@@ -9,6 +9,7 @@ import MacroProgressBar from '../components/MacroProgressBar';
 import { containerStyles } from '../styles/AppStyles';
 import { Card, CardContent } from '@mui/material';
 import SideBar from '../components/SideBar';
+import RegisterMealButton from '../components/RegisterMealButton';
 
 
 const Home: React.FC = () => {
@@ -21,6 +22,7 @@ const Home: React.FC = () => {
       <CardContent>
         <CalorieCounter calories={1800} percentage={75} />
         <AddMealButton onClick={() => {}} />
+        <RegisterMealButton />
         <MealSection title="Café da Manhã" />
         <MealSection title="Almoço" />
         <MealSection title="Jantar" />
