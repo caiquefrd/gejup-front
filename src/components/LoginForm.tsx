@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import TextInput from '../components/TextInput';
 import Logo from '../components/Logo';
+import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async() => {
+    const navigate = useNavigate();
     console.log('Login clicked', { username, password });
     try {
       const response = await fetch('http://localhost:3000/login', {
@@ -21,6 +23,7 @@ const Login: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('Login successful:', data);
+        navigate('/home')
       } else {
         console.error('Login failed');
         }
