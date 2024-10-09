@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import TextInput from '../components/TextInput';
 import Logo from '../components/Logo';
+import { ThemeProvider } from '@emotion/react';
+import theme from '../styles/theme';
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -30,7 +32,8 @@ const Register: React.FC = () => {
   };
 
   return (
-    <Box
+    <ThemeProvider theme={theme}>
+      <Box
       display="flex"
       alignItems="center"
       justifyContent="center"
@@ -48,12 +51,14 @@ const Register: React.FC = () => {
           color="primary"
           fullWidth
           onClick={handleRegister}
-          style={{ marginTop: '16px', backgroundColor: '#00C58E', borderRadius: 15, height:'40px' }}
+          href="/"
+          style={{ marginTop: '16px', backgroundColor: '#00C58E', borderRadius: 15, height:'30px' }}
         >
           Cadastre-se
         </Button>
       </Box>
     </Box>
+    </ThemeProvider>
   );
 };
 

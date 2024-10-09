@@ -6,7 +6,7 @@ export default function NavButtons(){
 
     return(
         <div className="buttonCollections">
-            <button onClick={() => navigate('/')} className="active">Home</button>
+            <button onClick={() => navigate('/home')} className="active">Home</button>
             <button onClick={() => navigate('/metas')}>Metas</button>
             <button>Badges</button>
         </div>

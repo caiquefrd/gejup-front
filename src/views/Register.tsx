@@ -9,9 +9,7 @@ const Register: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline /> 
-      <div style={{ backgroundColor: '#12181b', height: '100%', width:'100%' }}> 
       <RegisterForm />
-    </div>
     </ThemeProvider>
   );
 };

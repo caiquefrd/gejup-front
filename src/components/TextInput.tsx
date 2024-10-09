@@ -20,7 +20,7 @@ const TextInput: React.FC<TextInputProps> = ({ label, type = 'text', value, onCh
       value={value}
       onChange={onChange}
       InputProps={{
-        style: { backgroundColor: '#d3d3d3', borderRadius: 15 },
+        style: { backgroundColor: '#d3d3d3', borderRadius: 20 },
       }}
     />
   );

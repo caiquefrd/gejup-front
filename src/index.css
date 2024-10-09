@@ -3,11 +3,14 @@ html, body {
     padding: 0;
     height: 100%;
     width: 100%;
-    background-color: #0E3B46; /* Same background color as the form */
+    background-color: #0E3B46;
   }  
 
 #root{
     background-color: #152025;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     display: flex;
     --bluePetro: #024059;
     --baseBlue: #026873;

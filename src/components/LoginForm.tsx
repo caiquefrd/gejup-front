@@ -3,6 +3,8 @@ import { Box, Typography, Button } from '@mui/material';
 import TextInput from '../components/TextInput';
 import Logo from '../components/Logo';
 import { useNavigate } from 'react-router-dom';
+import theme from '../styles/theme';
+import { ThemeProvider } from '@emotion/react';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -38,7 +40,8 @@ const Login: React.FC = () => {
   };
 
   return (
-    <Box
+    <ThemeProvider theme={theme}>
+      <Box
       display="flex"
       alignItems="center"
       justifyContent="center"
@@ -55,20 +58,26 @@ const Login: React.FC = () => {
           variant="contained"
           fullWidth
           onClick={handleLogin}
-          style={{ marginTop: '16px', backgroundColor: '#00C58E', borderRadius: 15, height: '40px' }}
+          size="medium"
+          color="primary"
+          style={{ marginTop: '16px', backgroundColor: '#00C58E', borderRadius: 15, height: '30px' }}
         >
-          Entrar
+        Entrar
         </Button>
         <Button
-          variant="contained"
+          variant="text"
           fullWidth
           onClick={handleRegister}
-          style={{ marginTop: '16px', backgroundColor: '#0E3B46', borderRadius: 15, height: '0px' }}
+          disableElevation
+          size="small"
+          color="primary"
+          style={{ marginTop: '20px', backgroundColor: '#0E3B46', borderRadius: 15, height: '20px'}}
         >
-          cadastre-se
+        Cadastre-se
         </Button>
       </Box>
     </Box>
+    </ThemeProvider>
   );
 };
 

@@ -17,7 +17,7 @@ const Home: React.FC = () => {
       <CssBaseline />
       <SideBar></SideBar>
       <div style={containerStyles}>
-      <Card elevation={22} sx={{ width: '1100px', maxWidth: 1200, backgroundColor:'#F2F2F2', boxShadow:'200'  }}>
+      <Card elevation={30} sx={{ width: '1100px', maxWidth: 1200, backgroundColor:'#F2F2F2', boxShadow:'200'  }}>
       <CardContent>
         <CalorieCounter calories={1800} percentage={75} />
         <AddMealButton onClick={() => {}} />
