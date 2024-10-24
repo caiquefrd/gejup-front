@@ -17,7 +17,7 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('authToken');
     console.log('ohayo')
     console.log(token); //retornando null
     if (token) {
@@ -30,6 +30,7 @@ const Home: React.FC = () => {
         })
         .then(response => {
           if (!response.ok) {
+            console.log('caiu')  
             throw new Error('Failed to fetch the protected resource');
           }
           return response.json();

@@ -4,27 +4,32 @@ import TextInput from '../components/TextInput';
 import Logo from '../components/Logo';
 import { ThemeProvider } from '@emotion/react';
 import theme from '../styles/theme';
+import { useNavigate } from "react-router-dom";
+
 
 const Register: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const [mail, setmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const navigate = useNavigate();
+  
   const handleRegister = async() => {
-    console.log('Registred', { username, password });
+    console.log('Login clicked', { mail, password })
     try {
       const response = await fetch('http://localhost:3000/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ mail, password }),
       });
   
       if (response.ok) {
         const data = await response.json();
         console.log('Register successful:', data);
+        navigate("/")
       } else {
-        console.error('Register failed');
+        const errorData = await response.json();
+        console.error('Register failed', errorData);
         }
     } catch (error) {
       console.error('Error:', error);
@@ -44,14 +49,13 @@ const Register: React.FC = () => {
         <Typography variant="h5" align="center" mb={2} style={{ color: '#FFFFFF' }}>
           Cadastrar
         </Typography>
-        <TextInput label="E-mail" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <TextInput label="E-mail" value={mail} onChange={(e) => setmail(e.target.value)} />
         <TextInput label="Senha" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <Button
           variant="contained"
           color="primary"
           fullWidth
           onClick={handleRegister}
-          href="/"
           style={{ marginTop: '16px', backgroundColor: '#00C58E', borderRadius: 15, height:'30px' }}
         >
           Cadastre-se

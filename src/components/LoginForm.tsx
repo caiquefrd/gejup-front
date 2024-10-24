@@ -7,19 +7,19 @@ import theme from "../styles/theme";
 import { ThemeProvider } from "@emotion/react";
 
 const Login: React.FC = () => {
-  const [username, setUsername] = useState("");
+  const [mail, setmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    console.log("Login clicked", { username, password });
+    console.log("Login clicked", { mail, password });
     try {
       const response = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ mail, password }),
       });
 
       if (response.ok) {
@@ -60,8 +60,8 @@ const Login: React.FC = () => {
           </Typography>
           <TextInput
             label="E-mail"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={mail}
+            onChange={(e) => setmail(e.target.value)}
           />
           <TextInput
             label="Senha"
