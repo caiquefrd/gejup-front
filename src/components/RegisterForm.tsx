@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 const Register: React.FC = () => {
   const [mail, setmail] = useState('');
   const [password, setPassword] = useState('');
+  const [password_check, set_password_check] = useState('');
   const navigate = useNavigate();
   
   const handleRegister = async() => {
@@ -23,7 +24,7 @@ const Register: React.FC = () => {
         body: JSON.stringify({ mail, password }),
       });
   
-      if (response.ok) {
+      if (response.ok && password == password_check) {
         const data = await response.json();
         console.log('Register successful:', data);
         navigate("/")
@@ -36,6 +37,10 @@ const Register: React.FC = () => {
         }
   };
 
+  const handleNavLogin = async () => {
+    navigate("/")
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -47,10 +52,11 @@ const Register: React.FC = () => {
       <Box bgcolor="#0E3B46" p={4} borderRadius={8} boxShadow={3} width={300}>
         <Logo />
         <Typography variant="h5" align="center" mb={2} style={{ color: '#FFFFFF' }}>
-          Cadastrar
+          Cadastro
         </Typography>
         <TextInput label="E-mail" value={mail} onChange={(e) => setmail(e.target.value)} />
         <TextInput label="Senha" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <TextInput label="Confirme sua senha" type="password" value={password_check} onChange={(e) => set_password_check(e.target.value)} />
         <Button
           variant="contained"
           color="primary"
@@ -58,8 +64,14 @@ const Register: React.FC = () => {
           onClick={handleRegister}
           style={{ marginTop: '16px', backgroundColor: '#00C58E', borderRadius: 15, height:'30px' }}
         >
-          Cadastre-se
+          Cadastrar-se
         </Button>
+        <Typography mt={2} style={{ color: '#FFFFFF' }} align="center">
+          Ja tem uma conta? Faça login
+          <Button onClick={handleNavLogin} style={{height:'2px', width:'2px', backgroundColor: "#0E3B46",}} >
+            aqui
+          </Button>
+        </Typography>
       </Box>
     </Box>
     </ThemeProvider>
