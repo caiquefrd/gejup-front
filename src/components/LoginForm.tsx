@@ -26,7 +26,9 @@ const Login: React.FC = () => {
         const data = await response.json();
         console.log("Login successful:", data);
         const token = data.token;
+        const user_id = data.user_id;
         localStorage.setItem("authToken", token);
+        localStorage.setItem("userId", user_id)
         navigate("/home");
       } else {
         console.error("Login failed");
