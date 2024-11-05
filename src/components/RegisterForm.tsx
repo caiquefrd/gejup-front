@@ -8,20 +8,21 @@ import { useNavigate } from "react-router-dom";
 
 
 const Register: React.FC = () => {
-  const [mail, setmail] = useState('');
+  const [name, setName] = useState('');
+  const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [password_check, set_password_check] = useState('');
   const navigate = useNavigate();
   
   const handleRegister = async() => {
-    console.log('Login clicked', { mail, password })
+    console.log('Register', { mail, password })
     try {
       const response = await fetch('http://localhost:3000/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ mail, password }),
+        body: JSON.stringify({ name, mail, password }),
       });
   
       if (response.ok && password == password_check) {
@@ -30,7 +31,7 @@ const Register: React.FC = () => {
         navigate("/")
       } else {
         const errorData = await response.json();
-        console.error('Register failed', errorData);
+        console.error('Register failed', errorData);  
         }
     } catch (error) {
       console.error('Error:', error);
@@ -54,7 +55,8 @@ const Register: React.FC = () => {
         <Typography variant="h5" align="center" mb={2} style={{ color: '#FFFFFF' }}>
           Cadastro
         </Typography>
-        <TextInput label="E-mail" value={mail} onChange={(e) => setmail(e.target.value)} />
+        <TextInput label="Nome" value={name} onChange={(e) => setName(e.target.value)} />
+        <TextInput label="E-mail" value={mail} onChange={(e) => setMail(e.target.value)} />
         <TextInput label="Senha" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <TextInput label="Confirme sua senha" type="password" value={password_check} onChange={(e) => set_password_check(e.target.value)} />
         <Button

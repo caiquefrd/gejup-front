@@ -19,7 +19,6 @@ const Home: React.FC = () => {
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     console.log('ohayo')
-    console.log(token); //retornando null
     if (token) {
       fetch('http://localhost:3000/protected', {
         method: 'GET',
@@ -37,6 +36,7 @@ const Home: React.FC = () => {
         })
         .then(data => {
           setData(data);
+          localStorage.setItem("userId", data.userId);
         })
         .catch(error => {
           setError(error.message);
