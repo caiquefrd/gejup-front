@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Typography, Grid, Paper } from "@mui/material";
 import GoalTracker from "../components/GoalTracker";
 import WeightInputPopup from "../components/WeightInputPopup";
+import axios from "axios";
 
 const calculateGoal = (weight: number, type: string): number => {
   switch (type) {
@@ -21,12 +22,16 @@ const calculateGoal = (weight: number, type: string): number => {
 const GoalsCard: React.FC = () => {
   const [weight, setWeight] = useState<number | null>(null);
   const [isPopupVisible, setPopupVisible] = useState(false);
-
   const [manualGoals, setManualGoals] = useState<{ [key: string]: number }>({
     Água: 0,
     Proteínas: 0,
     Carboidratos: 0,
     Gorduras: 0,
+  });
+  const [macros, setMacros] = useState({
+    protein: { value: 0, target: 0 },
+    fat: { value: 0, target: 0 },
+    carbs: { value: 0, target: 0 },
   });
 
   // Efeito para carregar o peso e as metas manuais do localStorage quando o componente é montado
@@ -65,11 +70,28 @@ const GoalsCard: React.FC = () => {
     });
   };
 
+  // Chamada para pegar os dados do backend
+  useEffect(() => {
+    const fetchMacros = async () => {
+      try {
+        const user_id = localStorage.getItem("userId"); // Substitua pelo seu método de obter o ID do 
+        const response = await axios.get(`http://localhost:3000/ref?user_id=${user_id}`); // Substitua user_id conforme necessário
+        const data = response.data.user_data;
+        setMacros({
+          protein: { value: data.protein, target: 100 }, // Ajuste conforme o formato do seu backend
+          fat: { value: data.fat, target: 80 },
+          carbs: { value: data.carb, target: 300 },
+        });
+      } catch (error) {
+        console.error("Erro ao buscar dados do backend", error);
+      }
+    };
+
+    fetchMacros();
+  }, []);
+
   const currentIntake = {
     Água: 1200,
-    Proteínas: 80,
-    Carboidratos: 250,
-    Gorduras: 70,
     Peso: weight || 0,
   };
 
@@ -101,7 +123,7 @@ const GoalsCard: React.FC = () => {
             <GoalTracker
               type="Proteínas"
               goal={manualGoals["Proteínas"] || calculateGoal(weight || 0, "Proteínas")}
-              current={currentIntake["Proteínas"]}
+              current={macros.protein.value} // Agora usamos o valor do backend
               onGoalChange={(newGoal) => handleGoalChange("Proteínas", newGoal)}
             />
           </Grid>
@@ -109,7 +131,7 @@ const GoalsCard: React.FC = () => {
             <GoalTracker
               type="Carboidratos"
               goal={manualGoals["Carboidratos"] || calculateGoal(weight || 0, "Carboidratos")}
-              current={currentIntake["Carboidratos"]}
+              current={macros.carbs.value} // Agora usamos o valor do backend
               onGoalChange={(newGoal) => handleGoalChange("Carboidratos", newGoal)}
             />
           </Grid>
@@ -117,7 +139,7 @@ const GoalsCard: React.FC = () => {
             <GoalTracker
               type="Gorduras"
               goal={manualGoals["Gorduras"] || calculateGoal(weight || 0, "Gorduras")}
-              current={currentIntake["Gorduras"]}
+              current={macros.fat.value} // Agora usamos o valor do backend
               onGoalChange={(newGoal) => handleGoalChange("Gorduras", newGoal)}
             />
           </Grid>
