@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';  
 import theme from '../styles/theme';  
@@ -9,30 +9,84 @@ import MacroProgressBar from '../components/MacroProgressBar';
 import { containerStyles } from '../styles/AppStyles';
 import { Card, CardContent } from '@mui/material';
 import SideBar from '../components/SideBar';
-import RegisterMealButton from '../components/RegisterMealButton';
-
-
+import { useNavigate } from 'react-router-dom';
+ 
+interface Meal {
+  _id: string;
+  descricao: string;
+  refeicao: string;
+}
+ 
 const Home: React.FC = () => {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const [meals, setMeals] = useState<Meal[]>([]); // Estado para armazenar as refeições
+  const navigate = useNavigate();
+ 
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      fetch('http://localhost:3000/protected', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch the protected resource');
+          }
+          return response.json();
+        })
+        .then(data => {
+          setData(data);
+          localStorage.setItem("userId", data.userId);
+          fetchMeals(); // Busca as refeições quando o usuário é autenticado
+        })
+        .catch(error => {
+          setError(error.message);
+        });
+    }
+  }, [navigate]);
+ 
+  // Função para buscar as refeições do banco de dados
+  const fetchMeals = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/getProduto?user_id=${localStorage.getItem('userId')}`);
+      const data = await response.json();
+      setMeals(data);
+    } catch (error) {
+      console.error("Erro ao buscar refeições:", error);
+    }
+  };
+ 
+  // Função que será chamada quando uma nova refeição for adicionada
+  const handleMealAdded = (meal: Meal) => {
+    setMeals((prevMeals) => [...prevMeals, meal]); // Adiciona a nova refeição à lista de refeições
+  };
+ 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <SideBar></SideBar>
+      <SideBar />
       <div style={containerStyles}>
-      <Card elevation={22} sx={{ width: '1100px', maxWidth: 1200, backgroundColor:'#F2F2F2', boxShadow:'200'  }}>
-      <CardContent>
-        <CalorieCounter calories={1800} percentage={75} />
-        <AddMealButton onClick={() => {}} />
-        <RegisterMealButton />
-        <MealSection title="Café da Manhã" />
-        <MealSection title="Almoço" />
-        <MealSection title="Jantar" />
-        <MacroProgressBar />
-        </CardContent>
-      </Card>
+        <Card elevation={30} sx={{ width: '1100px', maxWidth: 1200, backgroundColor:'#F2F2F2', boxShadow:'200' }}>
+          <CardContent>
+            <CalorieCounter calories={1800} percentage={75} />
+            <AddMealButton
+              userId={localStorage.getItem("userId") || ''}
+              addMeal={handleMealAdded}
+            />
+            <MealSection title="Café da Manhã" meals={meals.filter(meal => meal.refeicao === '1')} />
+            <MealSection title="Almoço" meals={meals.filter(meal => meal.refeicao === '2')} />
+            <MealSection title="Jantar" meals={meals.filter(meal => meal.refeicao === '3')} />
+            <MacroProgressBar />
+          </CardContent>
+        </Card>
       </div>
-      
     </ThemeProvider>
   );
 };
-
+ 
 export default Home;

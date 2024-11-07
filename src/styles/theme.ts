@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/';
 
 // 
 const theme = createTheme({
@@ -11,7 +11,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Poppins, sans-serif',  
+    fontFamily: 'Poppins, sans-serif',
   },
 });
 

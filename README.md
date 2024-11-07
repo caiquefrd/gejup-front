@@ -1,50 +1,56 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# <h1 align="center"> FRONT-END </h1>
 
-## Expanding the ESLint configuration
+### Tecnologias
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Tecnologias e ferramentas utilizadas no projeto: `React, TypeScript, Material-UI, Axios, Vite`
 
-- Configure the top-level `parserOptions` property like this:
+## Como Executar a aplicação
+```bash
+# Baixe este repositório ou clone pelo Git usando o comando:
+$ git clone https://github.com/seu-usuario/seu-repositorio.git
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+# Acesse a pasta do projeto
+$ cd front
+
+# Instale as dependências do projeto
+$ npm install
+
+# Inicie o Projeto
+$ npm run dev
+
+# O projeto será executado em: http://localhost:5173
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Funcionalidades da aplicação
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+<div align="center">
+  
+|                                                                    Tipo | Função                              | Descrição                                                                 |
+| ----------------------------------------------------------------------: | :---------------------------------- | :----------------------------------------------------------------------- |
+|                                                                    <hr> | <hr>                               | **Gerenciamento de Macronutrientes**                                      |
+|   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/addMeal`                         | Adicionar refeições e atualizar macronutrientes conforme o banco de dados |
+|   [![](https://img.shields.io/badge/GET-4682B4?style=for-the-badge)]()  | `/getMacros`                       | Recuperar dados de macronutrientes da API com Axios                        |
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+</div>
+
+## Estruturação das pastas
+
+| Pasta                    | Definição                                                                                  |
+| ------------------------ | ------------------------------------------------------------------------------------------ |
+| 📁 src/                   | Arquivos com o código fonte do projeto                                                     |
+| 📁 src/components/        | Componentes reutilizáveis para diferentes partes da aplicação, como `MacroProgressBar`      |
+| 📁 src/pages/             | Arquivos responsáveis pelas páginas principais do projeto                                  |
+| 📁 src/services/          | Serviços para realizar requisições HTTP, como a conexão com a API                          |
+| 📁 src/styles/            | Arquivos relacionados à estilização global da aplicação                                    |
+| 📁 src/utils/             | Funções utilitárias que podem ser reutilizadas em várias partes do projeto                 |
+| 📄 .gitignore             | Arquivo com a retenção de arquivos pelo serviço de git                                      |
+| 📄 vite.config.ts         | Arquivo usado para configurar o Vite para desenvolvimento com React e TypeScript           |
+| 📄 tsconfig.json          | Arquivo usado para configurar o TypeScript                                                 |
+| 📄 package.json           | Arquivo para gerenciar as dependências do projeto e compor scripts de terminal             |
+
+---
+
