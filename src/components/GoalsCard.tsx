@@ -14,6 +14,7 @@ const GoalsCard: React.FC = () => {
   });
   const [showWeightPopup, setShowWeightPopup] = useState(false);
 
+
   useEffect(() => {
     const fetchMacros = async () => {
       try {

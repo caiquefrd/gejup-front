@@ -18,7 +18,7 @@ interface GoalProps {
   isWeightGoal?: boolean;
   onWeightChange?: (newWeight: number) => void;
   onGoalChange?: (newGoal: number) => void;
-  userId: string; // Adicione um ID do usuário para a URL da API
+  userId: string;
 }
 
 const animationMap: { [key: string]: any } = {
@@ -59,13 +59,12 @@ const GoalTracker: React.FC<GoalProps> = ({ type, goal, current, isWeightGoal, o
     try {
       const updatedValue = isWeightGoal ? tempWeight : manualGoal;
       const user_id = localStorage.getItem("userId");
-      // Requisição PUT para atualizar o banco de dados
-      await api.put(`/goals?user_id=${user_id}`, {
+      await api.put(`/goals`, {
+        user_id: user_id,
         type,
         value: updatedValue,
       });
 
-      // Atualiza o estado local após o sucesso da requisição
       if (isWeightGoal && tempWeight !== null) {
         onWeightChange?.(tempWeight);
       } else {
@@ -93,16 +92,21 @@ const GoalTracker: React.FC<GoalProps> = ({ type, goal, current, isWeightGoal, o
       <Lottie options={animationData} height={100} width={100} />
       <Typography variant="h6">{type}</Typography>
 
-      <LinearProgress
-        variant="determinate"
-        value={progress}
-        sx={{ 
-          height: 10, 
-          borderRadius: 5, 
-          backgroundColor: '#e0e0e0', 
-          '& .MuiLinearProgress-bar': { backgroundColor: colorMap[type] } 
-        }}
-      />
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 2, px: 2 }}>
+        <Box sx={{ width: "80%", maxWidth: 300 }}>
+          <LinearProgress
+            variant="determinate"
+            value={progress}
+            sx={{ 
+              height: 10, 
+              borderRadius: 5, 
+              backgroundColor: '#e0e0e0', 
+              '& .MuiLinearProgress-bar': { backgroundColor: colorMap[type] } 
+            }}
+          />
+        </Box>
+      </Box>
+
       <Typography>{`${current} / ${manualGoal ?? goal}${
         type === "Peso" ? "kg" : type === "Água" ? "ml" : "g"
       }`}</Typography>
