@@ -42,24 +42,13 @@ const Home: React.FC = () => {
         .then(data => {
           setData(data);
           localStorage.setItem("userId", data.userId);
-          fetchMeals(); // Busca as refeições quando o usuário é autenticado
+          // fetchMeals(); // Busca as refeições quando o usuário é autenticado
         })
         .catch(error => {
           setError(error.message);
         });
     }
   }, [navigate]);
- 
-  // Função para buscar as refeições do banco de dados
-  const fetchMeals = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/getProduto?user_id=${localStorage.getItem('userId')}`);
-      const data = await response.json();
-      setMeals(data);
-    } catch (error) {
-      console.error("Erro ao buscar refeições:", error);
-    }
-  };
  
   // Função que será chamada quando uma nova refeição for adicionada
   const handleMealAdded = (meal: Meal) => {

@@ -75,8 +75,9 @@ const GoalsCard: React.FC = () => {
 
   return (
     <Container>
-      <Paper elevation={22} sx={{ width: "1100px", maxWidth: 1200, backgroundColor: "#F2F2F2", boxShadow: "200" }}>
-        <Typography variant="h4" gutterBottom align="center" fontWeight={600}>
+      <Paper elevation={22} sx={{ width: "100%", maxWidth: 1200, backgroundColor: "#F2F2F2", boxShadow: "200", margin: "auto",
+          padding: 4, }}>
+        <Typography variant="h5" gutterBottom align="center" fontWeight={600}>
           Minhas Metas Diárias
         </Typography>
         <Grid item xs={12} md={6}>
