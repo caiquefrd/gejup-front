@@ -238,11 +238,11 @@ const AddMealButton: React.FC<AddMealButtonProps> = ({ userId, addMeal }) => {
                     onClick={() =>
                       handleSuggestionClick({
                         prodprep_id: suggestion.prodprep_id,
-                        descricao: suggestion.produto_named,
+                        descricao: `${suggestion.produto_named} - ${suggestion.preparacao_named}`, // Set both fields as descricao
                       })
                     }
                   >
-                    {suggestion.produto_named}
+                    {suggestion.produto_named} - {suggestion.preparacao_named} {/* Display both fields here */}
                   </Typography>
                 ))}
               </Box>

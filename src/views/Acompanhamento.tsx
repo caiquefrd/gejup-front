@@ -193,7 +193,7 @@ const Acompanhamento: React.FC = () => {
                   </IconContainer>
                   <div>
                     <Typography variant="h5">Idade</Typography>
-                    <Typography variant="body2">31</Typography>
+                    <Typography variant="body2">21</Typography>
                   </div>
                 </CardContent>
               </StyledCard>
@@ -204,7 +204,7 @@ const Acompanhamento: React.FC = () => {
                   </IconContainer>
                   <div>
                     <Typography variant="h5">Altura</Typography>
-                    <Typography variant="body2">1,91 m</Typography>
+                    <Typography variant="body2">1,80 m</Typography>
                   </div>
                 </CardContent>
               </StyledCard>
@@ -215,7 +215,7 @@ const Acompanhamento: React.FC = () => {
                   </IconContainer>
                   <div>
                     <Typography variant="h5">Peso Atual</Typography>
-                    <Typography variant="body2">91 kg</Typography>
+                    <Typography variant="body2">88 kg</Typography>
                   </div>
                 </CardContent>
               </StyledCard>

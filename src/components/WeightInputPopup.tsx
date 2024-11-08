@@ -7,7 +7,7 @@ interface WeightInputPopupProps {
 }
 
 const WeightInputPopup: React.FC<WeightInputPopupProps> = ({ onClose }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [age, setAge] = useState<number | null>(null);
   const [weight, setWeight] = useState<number | null>(null);
   const [height, setHeight] = useState<number | null>(null);

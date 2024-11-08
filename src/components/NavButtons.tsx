@@ -8,7 +8,7 @@ export default function NavButtons(){
             <button onClick={() => navigate('/home')} className="active">Home</button>
             <button onClick={() => navigate('/metas')}>Metas</button>
             <button onClick={() => navigate('/acompanhamento')}>Acompanhamento</button>
-            <button>Badges</button>
+            <button onClick={() => navigate('/badges')}>Badges</button>
         </div>
     )
 }
