@@ -12,11 +12,11 @@ import SideBar from '../components/SideBar';
 import { useNavigate } from 'react-router-dom';
  
 interface Meal {
-  _id: string;
+  id: string;
   descricao: string;
   refeicao: string;
 }
- 
+
 const Home: React.FC = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
@@ -78,9 +78,9 @@ const Home: React.FC = () => {
               userId={localStorage.getItem("userId") || ''}
               addMeal={handleMealAdded}
             />
-            <MealSection title="Café da Manhã" meals={meals.filter(meal => meal.refeicao === '1')} />
-            <MealSection title="Almoço" meals={meals.filter(meal => meal.refeicao === '2')} />
-            <MealSection title="Jantar" meals={meals.filter(meal => meal.refeicao === '3')} />
+            <MealSection title="Café da Manhã"  />
+            <MealSection title="Almoço"  />
+            <MealSection title="Jantar"  />
             <MacroProgressBar />
           </CardContent>
         </Card>
