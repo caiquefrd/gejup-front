@@ -5,12 +5,13 @@ import Logo from "../components/Logo";
 import { useNavigate } from "react-router-dom";
 import theme from "../styles/theme";
 import { ThemeProvider } from "@emotion/react";
-
+ 
 const Login: React.FC = () => {
   const [mail, setmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
+ 
+  // Função de login
   const handleLogin = async () => {
     console.log("Login clicked", { mail, password });
     try {
@@ -21,15 +22,21 @@ const Login: React.FC = () => {
         },
         body: JSON.stringify({ mail, password }),
       });
-
+ 
       if (response.ok) {
         const data = await response.json();
         console.log("Login successful:", data);
+ 
         const token = data.token;
         const user_id = data.user_id;
+        const userName = data.name;  // Obter o nome do usuário da resposta
+ 
+        // Armazenar no localStorage
         localStorage.setItem("authToken", token);
-        localStorage.setItem("userId", user_id)
-        navigate("/home");
+        localStorage.setItem("userId", user_id);
+        localStorage.setItem("userName", userName);  // Salvar o nome do usuário
+ 
+        navigate("/home");  // Redireciona após o login
       } else {
         console.error("Login failed");
       }
@@ -37,11 +44,12 @@ const Login: React.FC = () => {
       console.error("Error:", error);
     }
   };
-
+ 
+  // Função para navegar para o cadastro
   const handleRegister = async () => {
     navigate("/register");
   };
-
+ 
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -107,5 +115,5 @@ const Login: React.FC = () => {
     </ThemeProvider>
   );
 };
-
+ 
 export default Login;

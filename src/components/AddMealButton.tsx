@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -12,62 +12,109 @@ import {
   Fade,
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
-
-const AddMealButton: React.FC = () => {
+ 
+interface AddMealButtonProps {
+  userId: string;
+  addMeal: (meal: { id: string; descricao: string; refeicao: string }) => void;
+}
+ 
+const AddMealButton: React.FC<AddMealButtonProps> = ({ userId, addMeal }) => {
   const [open, setOpen] = useState(false);
   const [refeicao, setRefeicao] = useState('');
   const [descricao, setDescricao] = useState('');
   const [foodSuggestions, setFoodSuggestions] = useState<{ _id: string; descricao: string }[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-
+  const [selectedFood, setSelectedFood] = useState<{ _id: string; descricao: string } | null>(null);
+ 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setRefeicao('');
     setDescricao('');
     setSearchQuery('');
     setFoodSuggestions([]);
+    setSelectedFood(null);
     setOpen(false);
   };
-
+ 
   const handleChangeRefeicao = (event: SelectChangeEvent) => {
     setRefeicao(event.target.value as string);
   };
-
-  const handleDescricaoChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+ 
+  // Busca sugerida no banco de dados com base na descrição
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (descricao.length > 0) {
+        try {
+          const response = await fetch(`http://localhost:3000/getProduto?&query=${descricao}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+ 
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+ 
+          const data = await response.json();
+          console.log('Sugestões de alimentos:', data);
+          setFoodSuggestions(data);
+        } catch (error) {
+          console.error('Error fetching food suggestions:', error);
+        }
+      } else {
+        setFoodSuggestions([]);
+      }
+    };
+ 
+    fetchSuggestions();
+  }, [descricao]);
+ 
+  const handleDescricaoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setDescricao(value);
-    setSearchQuery(value); // Atualiza o estado do campo de pesquisa
-
-    // Chama a API de sugestões de alimentos quando o campo for alterado
-    if (value.length > 0) {
+    setSearchQuery(value);
+  };
+ 
+  const handleSuggestionClick = (food: { _id: string; descricao: string }) => {
+    setDescricao(food.descricao);
+    setSelectedFood(food);
+    setFoodSuggestions([]);
+  };
+ 
+  const handleRegisterMeal = async () => {
+    if (selectedFood && refeicao) {
       try {
-        const user_id = localStorage.getItem('user_id');
-        const response = await fetch("http://localhost:3000/getProdPrep", {
-          method:"GET",
-          headers:{
-            "Content-Type": "application/json",
+        const response = await fetch(`http://localhost:3000/ref`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify({user_id})
-        })
-          
+          body: JSON.stringify({
+            user_id: userId,
+            prodprep_id: selectedFood._id,
+          }),
+        });
+ 
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        const data = await response.json();
-        setFoodSuggestions(data); // Atualiza as sugestões de alimentos
+ 
+        // Chama addMeal para atualizar a lista de refeições na Home
+        addMeal({
+          id: selectedFood._id,
+          descricao: selectedFood.descricao,
+          refeicao,
+        });
+ 
+        console.log('Alimento registrado com sucesso');
+        handleClose();
       } catch (error) {
-        console.error("Error fetching food suggestions:", error);
+        console.error('Erro ao registrar alimento:', error);
       }
-    } else {
-      setFoodSuggestions([]); // Limpa as sugestões se o campo estiver vazio
     }
   };
-
-  const handleSuggestionClick = (food: { _id: string; descricao: string }) => {
-    setDescricao(food.descricao); // Atualiza a descrição com o alimento sugerido
-    setFoodSuggestions([]); // Limpa as sugestões após selecionar um alimento
-  };
-
+ 
   return (
     <>
       <Button
@@ -100,7 +147,7 @@ const AddMealButton: React.FC = () => {
             <Typography id="parent-modal-title" variant="h6" component="h2" marginLeft={'58px'}>
               Registro de Refeição
             </Typography>
-
+ 
             <Typography id="parent-modal-description" sx={{ mt: 2, marginBottom: '10px' }}>
               Selecione a refeição:
             </Typography>
@@ -114,12 +161,12 @@ const AddMealButton: React.FC = () => {
                 onChange={handleChangeRefeicao}
                 sx={{ borderColor: '#04BF8A' }}
               >
-                <MenuItem value={1}>Café da Manhã</MenuItem>
-                <MenuItem value={2}>Almoço</MenuItem>
-                <MenuItem value={3}>Janta</MenuItem>
+                <MenuItem value="1">Café da Manhã</MenuItem>
+                <MenuItem value="2">Almoço</MenuItem>
+                <MenuItem value="3">Janta</MenuItem>
               </Select>
             </FormControl>
-
+ 
             <Typography id="parent-modal-description" sx={{ mt: 2, marginBottom: '10px' }}>
               Busque um alimento:
             </Typography>
@@ -131,8 +178,7 @@ const AddMealButton: React.FC = () => {
               onChange={handleDescricaoChange}
               sx={{ marginBottom: '5px' }}
             />
-
-            {/* Lista de sugestões de alimentos */}
+ 
             {foodSuggestions.length > 0 && (
               <Box sx={{ maxHeight: 200, overflowY: 'auto', border: '1px solid #ccc', borderRadius: '5px', marginBottom: '10px' }}>
                 {foodSuggestions.map((food) => (
@@ -141,16 +187,16 @@ const AddMealButton: React.FC = () => {
                     sx={{ padding: '5px', cursor: 'pointer' }}
                     onClick={() => handleSuggestionClick(food)}
                   >
-                    {food.descricao} {/* Aqui, exibimos a descrição correta */}
+                    {food.descricao}
                   </Typography>
                 ))}
               </Box>
             )}
-
+ 
             <Button
               variant="contained"
               color="primary"
-              onClick={handleClose}
+              onClick={handleRegisterMeal}
               sx={{
                 marginTop: 2,
                 marginBottom: 2,
@@ -169,5 +215,5 @@ const AddMealButton: React.FC = () => {
     </>
   );
 };
-
+ 
 export default AddMealButton;
