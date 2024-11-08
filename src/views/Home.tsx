@@ -60,19 +60,19 @@ const Home: React.FC = () => {
       <CssBaseline />
       <SideBar />
       <div style={containerStyles}>
-        <Card elevation={30} sx={{ width: '1100px', maxWidth: 1200, backgroundColor:'#F2F2F2', boxShadow:'200' }}>
-          <CardContent>
-            <CalorieCounter calories={1800} percentage={75} />
-            <AddMealButton
+      <Card elevation={30} sx={{ width: '1100px', maxWidth: 1200, backgroundColor:'#F2F2F2', boxShadow:'200'  }}>
+      <CardContent>
+        <CalorieCounter  />
+        <AddMealButton
               userId={localStorage.getItem("userId") || ''}
               addMeal={handleMealAdded}
             />
-            <MealSection title="Café da Manhã"  />
-            <MealSection title="Almoço"  />
-            <MealSection title="Jantar"  />
-            <MacroProgressBar />
-          </CardContent>
-        </Card>
+        <MealSection title="Café da Manhã" />
+        <MealSection title="Almoço" />
+        <MealSection title="Jantar" />
+        <MacroProgressBar />
+        </CardContent>
+      </Card>
       </div>
     </ThemeProvider>
   );
