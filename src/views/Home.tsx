@@ -9,7 +9,12 @@ import MacroProgressBar from '../components/MacroProgressBar';
 import { containerStyles } from '../styles/AppStyles';
 import { Card, CardContent } from '@mui/material';
 import SideBar from '../components/SideBar';
+<<<<<<< HEAD
 import { useNavigate } from 'react-router-dom'; // For redirection
+=======
+import RegisterMealButton from '../components/RegisterMealButton';
+
+>>>>>>> 4788224867f521cd7941fa228c188d8e03065752
 
 const Home: React.FC = () => {
   const [data, setData] = useState(null);
@@ -53,6 +58,7 @@ const Home: React.FC = () => {
       <CardContent>
         <CalorieCounter calories={1800} percentage={75} />
         <AddMealButton onClick={() => {}} />
+        <RegisterMealButton />
         <MealSection title="Café da Manhã" />
         <MealSection title="Almoço" />
         <MealSection title="Jantar" />
