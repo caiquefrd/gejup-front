@@ -9,66 +9,73 @@ import MacroProgressBar from '../components/MacroProgressBar';
 import { containerStyles } from '../styles/AppStyles';
 import { Card, CardContent } from '@mui/material';
 import SideBar from '../components/SideBar';
-<<<<<<< HEAD
-import { useNavigate } from 'react-router-dom'; // For redirection
-=======
-import RegisterMealButton from '../components/RegisterMealButton';
-
->>>>>>> 4788224867f521cd7941fa228c188d8e03065752
+import { useNavigate } from 'react-router-dom';
+ 
+interface Meal {
+  id: string;
+  descricao: string;
+  refeicao: string;
+}
 
 const Home: React.FC = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  const [meals, setMeals] = useState<Meal[]>([]); // Estado para armazenar as refeições
   const navigate = useNavigate();
-
+ 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-    console.log('ohayo')
-    console.log(token); //retornando null
     if (token) {
       fetch('http://localhost:3000/protected', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
-          },
-        })
+        },
+      })
         .then(response => {
           if (!response.ok) {
-            console.log('caiu')  
             throw new Error('Failed to fetch the protected resource');
           }
           return response.json();
         })
         .then(data => {
           setData(data);
+          localStorage.setItem("userId", data.userId);
+          // fetchMeals(); // Busca as refeições quando o usuário é autenticado
         })
         .catch(error => {
           setError(error.message);
         });
     }
   }, [navigate]);
-
+ 
+  // Função que será chamada quando uma nova refeição for adicionada
+  const handleMealAdded = (meal: Meal) => {
+    setMeals((prevMeals) => [...prevMeals, meal]); // Adiciona a nova refeição à lista de refeições
+  };
+ 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <SideBar></SideBar>
+      <SideBar />
       <div style={containerStyles}>
-      <Card elevation={30} sx={{ width: '1100px', maxWidth: 1200, backgroundColor:'#F2F2F2', boxShadow:'200'  }}>
-      <CardContent>
-        <CalorieCounter calories={1800} percentage={75} />
-        <AddMealButton onClick={() => {}} />
-        <RegisterMealButton />
-        <MealSection title="Café da Manhã" />
-        <MealSection title="Almoço" />
-        <MealSection title="Jantar" />
-        <MacroProgressBar />
-        </CardContent>
-      </Card>
+        <Card elevation={30} sx={{ width: '1100px', maxWidth: 1200, backgroundColor:'#F2F2F2', boxShadow:'200' }}>
+          <CardContent>
+            <CalorieCounter calories={1800} percentage={75} />
+            <AddMealButton
+              userId={localStorage.getItem("userId") || ''}
+              addMeal={handleMealAdded}
+            />
+            <MealSection title="Café da Manhã"  />
+            <MealSection title="Almoço"  />
+            <MealSection title="Jantar"  />
+            <MacroProgressBar />
+          </CardContent>
+        </Card>
       </div>
-      
     </ThemeProvider>
   );
 };
-
+ 
 export default Home;
