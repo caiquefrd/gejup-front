@@ -1,21 +1,15 @@
 import React, { useState } from "react";
-import {
-  LinearProgress,
-  IconButton,
-  Dialog,
-  Typography,
-  Box,
-  TextField,
-  Button,
-} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import { motion } from "framer-motion";
-import Lottie from "react-lottie";
-import waterAnimation from "../assets/lottieIcons/water.json";
-import proteinAnimation from "../assets/lottieIcons/protein.json";
-import carbsAnimation from "../assets/lottieIcons/carbs.json";
-import fatsAnimation from "../assets/lottieIcons/fats.json";
-import weightAnimation from "../assets/lottieIcons/weight.json";
+import axios from "axios";
+import { LinearProgress, IconButton, Dialog, Typography, Box, TextField, Button } from "@mui/material";
+import EditIcon from '@mui/icons-material/Edit';
+import { motion } from 'framer-motion';
+import Lottie from 'react-lottie';
+import waterAnimation from '../assets/lottieIcons/water.json';
+import proteinAnimation from '../assets/lottieIcons/protein.json'; 
+import carbsAnimation from '../assets/lottieIcons/carbs.json'; 
+import fatsAnimation from '../assets/lottieIcons/fats.json';
+import weightAnimation from '../assets/lottieIcons/weight.json';
+import api from "../services/api";
 
 interface GoalProps {
   type: string;
@@ -24,6 +18,7 @@ interface GoalProps {
   isWeightGoal?: boolean;
   onWeightChange?: (newWeight: number) => void;
   onGoalChange?: (newGoal: number) => void;
+  userId: string; // Adicione um ID do usuário para a URL da API
 }
 
 const animationMap: { [key: string]: any } = {
@@ -42,19 +37,16 @@ const colorMap: { [key: string]: string } = {
   Peso: "#9C27B0",
 };
 
-const GoalTracker: React.FC<GoalProps> = ({
-  type,
-  goal,
-  current,
-  isWeightGoal,
-  onWeightChange,
-  onGoalChange,
-}) => {
+const GoalTracker: React.FC<GoalProps> = ({ type, goal, current, isWeightGoal, onWeightChange, onGoalChange, userId }) => {
   const [open, setOpen] = useState(false);
   const [manualGoal, setManualGoal] = useState<number | null>(null);
   const [tempWeight, setTempWeight] = useState<number | null>(null);
 
-  const progress = (current / (manualGoal ?? goal)) * 100;
+  const progress = isWeightGoal
+    ? goal < current
+      ? Math.min(100, ((current - goal) / current) * 100)
+      : Math.min(100, (current / goal) * 100)
+    : Math.min(100, (current / (manualGoal || goal)) * 100);
 
   const handleEditClick = () => {
     if (isWeightGoal) {
@@ -63,13 +55,28 @@ const GoalTracker: React.FC<GoalProps> = ({
     setOpen(true);
   };
 
-  const handleSave = () => {
-    if (isWeightGoal && tempWeight !== null) {
-      onWeightChange?.(tempWeight);
-    } else if (manualGoal !== null) {
-      onGoalChange?.(manualGoal);
+  const handleSave = async () => {
+    try {
+      const updatedValue = isWeightGoal ? tempWeight : manualGoal;
+      const user_id = localStorage.getItem("userId");
+      // Requisição PUT para atualizar o banco de dados
+      await api.put(`/goals?user_id=${user_id}`, {
+        type,
+        value: updatedValue,
+      });
+
+      // Atualiza o estado local após o sucesso da requisição
+      if (isWeightGoal && tempWeight !== null) {
+        onWeightChange?.(tempWeight);
+      } else {
+        onGoalChange?.(manualGoal);
+      }
+
+      setOpen(false);
+    } catch (error) {
+      console.error("Erro ao atualizar a meta:", error);
+      alert("Erro ao atualizar a meta. Tente novamente.");
     }
-    setOpen(false);
   };
 
   const animationData = {
@@ -89,11 +96,11 @@ const GoalTracker: React.FC<GoalProps> = ({
       <LinearProgress
         variant="determinate"
         value={progress}
-        sx={{
-          height: 10,
-          borderRadius: 5,
-          backgroundColor: "#e0e0e0",
-          "& .MuiLinearProgress-bar": { backgroundColor: colorMap[type] },
+        sx={{ 
+          height: 10, 
+          borderRadius: 5, 
+          backgroundColor: '#e0e0e0', 
+          '& .MuiLinearProgress-bar': { backgroundColor: colorMap[type] } 
         }}
       />
       <Typography>{`${current} / ${manualGoal ?? goal}${
