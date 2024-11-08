@@ -7,14 +7,18 @@ interface WeightInputPopupProps {
 }
 
 const WeightInputPopup: React.FC<WeightInputPopupProps> = ({ onClose }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [age, setAge] = useState<number | null>(null);
   const [weight, setWeight] = useState<number | null>(null);
   const [height, setHeight] = useState<number | null>(null);
   const [weightGoal, setWeightGoal] = useState<number | null>(null);
-  
 
-
+  useEffect(() => {
+    const isUserGoalSubmitted = localStorage.getItem('userGoalSubmitted');
+    if (isUserGoalSubmitted === 'true') {
+      setIsVisible(false);
+    }
+  }, []);
 
   const handleSubmit = async () => {
     if (age && weight && height && weightGoal) {
@@ -24,8 +28,8 @@ const WeightInputPopup: React.FC<WeightInputPopupProps> = ({ onClose }) => {
           console.error('User ID não encontrado no localStorage');
           return;
         }
+
   
-        // Dados a serem enviados ao backend (convertidos para string)
         const userData = {
           user_id: userId,
           age: age.toString(),
@@ -33,8 +37,12 @@ const WeightInputPopup: React.FC<WeightInputPopupProps> = ({ onClose }) => {
           heigth: height.toString(),
           weigthGoal: weightGoal.toString(),
         };
-  
+
         await api.post('/goals', userData);
+        
+
+        localStorage.setItem('userGoalSubmitted', 'true');
+        
         onClose(userData);
         setIsVisible(false);
       } catch (error) {
@@ -42,7 +50,6 @@ const WeightInputPopup: React.FC<WeightInputPopupProps> = ({ onClose }) => {
       }
     }
   };
-  
 
   return (
     isVisible && (
