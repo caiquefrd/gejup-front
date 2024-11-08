@@ -61,11 +61,12 @@ const GoalsCard: React.FC = () => {
         sx={{
           width: "1100px",
           maxWidth: 1200,
+          height: "800px",
           backgroundColor: "#F2F2F2",
           boxShadow: "200",
         }}
       >
-        <Typography variant="h4" gutterBottom align="center" fontWeight={600}>
+        <Typography variant="h6" gutterBottom align="center" fontWeight={600} mt={5}>
           Minhas Metas Diárias
         </Typography>
         
@@ -78,7 +79,7 @@ const GoalsCard: React.FC = () => {
           />
         </Grid>
 
-        <Grid container spacing={4}>
+        <Grid container spacing={1}>
           <Grid item xs={12} md={6}>
             <GoalTracker
               type="Água"
