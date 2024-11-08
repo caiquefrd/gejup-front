@@ -1,5 +1,5 @@
 import React from "react";
-import pogba from "../assets/pp.jpeg";
+import pogba from "../assets/user.png";
  
 export default function ProfileHeader() {
     // Recupera o nome do usuário do localStorage

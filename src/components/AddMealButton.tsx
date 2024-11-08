@@ -33,6 +33,9 @@ const AddMealButton: React.FC<AddMealButtonProps> = ({ userId, addMeal }) => {
   const [foodSuggestions, setFoodSuggestions] = useState<ProductPreparation[]>(
     []
   );
+  const [filteredSuggestions, setFilteredSuggestions] = useState<
+    ProductPreparation[]
+  >([]);
   const [selectedFood, setSelectedFood] = useState<{
     prodprep_id: string;
     descricao: string;
@@ -44,6 +47,7 @@ const AddMealButton: React.FC<AddMealButtonProps> = ({ userId, addMeal }) => {
     setRefeicao("");
     setDescricao("");
     setFoodSuggestions([]);
+    setFilteredSuggestions([]);
     setSelectedFood(null);
     setOpen(false);
   };
@@ -52,10 +56,7 @@ const AddMealButton: React.FC<AddMealButtonProps> = ({ userId, addMeal }) => {
     setRefeicao(event.target.value as string);
   };
 
-  // const handleChangePeso = (event: SelectChangeEvent) => {
-  //   setRefeicao(event.target.value as string);
-  // };
-
+  // Fetch suggestions from the API based on the query
   const fetchSuggestions = useCallback(
     debounce(async (query: string) => {
       if (query) {
@@ -68,46 +69,60 @@ const AddMealButton: React.FC<AddMealButtonProps> = ({ userId, addMeal }) => {
           if (!response.ok) throw new Error("Network response was not ok");
 
           const data: ProductPreparation[] = await response.json();
-          setFoodSuggestions(data); // Store the full array of objects
+          setFoodSuggestions(data); // Store fetched data
+          setFilteredSuggestions(data); // Initialize filtered data
         } catch (error) {
           console.error("Error fetching food suggestions:", error);
         }
       } else {
         setFoodSuggestions([]);
+        setFilteredSuggestions([]);
       }
     }, 500),
     []
   );
 
+  // Handle real-time filtering as the user types
   const handleDescricaoChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const value = event.target.value;
     setDescricao(value);
-    fetchSuggestions(value);
+
+    // Fetch data if input is not empty, otherwise reset suggestions
+    if (value) {
+      fetchSuggestions(value);
+
+      // Filter suggestions in real-time
+      const filtered = foodSuggestions.filter((item) =>
+        item.produto_named.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredSuggestions(filtered);
+    } else {
+      setFilteredSuggestions([]);
+    }
   };
 
-  const handlePesoChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = event.target.value;
-    setPeso(value);
+  const handlePesoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPeso(event.target.value);
   };
 
+  // Handle the selection of a food suggestion
   const handleSuggestionClick = (food: {
     prodprep_id: string;
     descricao: string;
   }) => {
     setDescricao(food.descricao);
     setSelectedFood(food);
-    setFoodSuggestions([]);
+    setFilteredSuggestions([]);
   };
 
+  // Register meal and send data to the backend
   const handleRegisterMeal = async () => {
     if (selectedFood && refeicao && peso) {
       try {
         const food_weigth = peso;
-        const response = await fetch(`http://localhost:3000/ref`, {
+        const response = await fetch("http://localhost:3000/ref", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -170,7 +185,7 @@ const AddMealButton: React.FC<AddMealButtonProps> = ({ userId, addMeal }) => {
               p: 4,
             }}
           >
-            <Typography variant="h6" component="h2" align="center">
+            <Typography variant="h6" align="center">
               Registro de Refeição
             </Typography>
 
@@ -180,7 +195,6 @@ const AddMealButton: React.FC<AddMealButtonProps> = ({ userId, addMeal }) => {
                 value={refeicao}
                 label="Refeição"
                 onChange={handleChangeRefeicao}
-                sx={{ borderColor: "#04BF8A" }}
               >
                 <MenuItem value="1">Café da Manhã</MenuItem>
                 <MenuItem value="2">Almoço</MenuItem>
@@ -206,7 +220,7 @@ const AddMealButton: React.FC<AddMealButtonProps> = ({ userId, addMeal }) => {
               sx={{ mt: 2 }}
             />
 
-            {foodSuggestions.length > 0 && (
+            {filteredSuggestions.length > 0 && (
               <Box
                 sx={{
                   maxHeight: 200,
@@ -217,9 +231,9 @@ const AddMealButton: React.FC<AddMealButtonProps> = ({ userId, addMeal }) => {
                   mt: 1,
                 }}
               >
-                {foodSuggestions.map((suggestion) => (
+                {filteredSuggestions.map((suggestion) => (
                   <Typography
-                    key={suggestion.prodprep_id} // Use prodprep_id as the key
+                    key={suggestion.prodprep_id}
                     sx={{ padding: "5px", cursor: "pointer" }}
                     onClick={() =>
                       handleSuggestionClick({
@@ -228,7 +242,7 @@ const AddMealButton: React.FC<AddMealButtonProps> = ({ userId, addMeal }) => {
                       })
                     }
                   >
-                    {suggestion.produto_named} {/* Display the product name */}
+                    {suggestion.produto_named}
                   </Typography>
                 ))}
               </Box>
