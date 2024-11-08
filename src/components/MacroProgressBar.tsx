@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, LinearProgress, Paper } from '@mui/material';
-import axios from 'axios';
+import api from '../services/api';
+import { use } from 'framer-motion/client';
 
 interface MacroProgressBarProps {
   label: string;
@@ -10,7 +11,7 @@ interface MacroProgressBarProps {
 }
 
 const MacroProgressBar: React.FC<MacroProgressBarProps> = ({ label, value, targetValue, color }) => {
-  const progress = (value / targetValue) * 100;
+  const progress = Math.min((value / targetValue) * 100, 100);
 
   return (
     <Paper sx={{ padding: 2, marginBottom: 2, boxShadow: 8 }}>
@@ -57,26 +58,30 @@ const MacroTracker: React.FC = () => {
     carbs: { value: 0, target: 0 },
   });
 
+
   useEffect(() => {
     // Função para buscar os dados nutricionais do backend
     const fetchNutritionalData = async () => {
       try {
         const user_id = localStorage.getItem('userId'); 
-        const calculatedGoals = JSON.parse(localStorage.getItem('calculatedGoals') || '{}');
-        const manualGoals = JSON.parse(localStorage.getItem('manualGoals') || '{}');
 
         if (!user_id) {
           console.error("User ID não encontrado no localStorage");
           return;
         }
 
-        const response = await axios.get(`http://localhost:3000/ref?user_id=${user_id}`);
+        const response = await api.get(`/ref?user_id=${user_id}`);
         console.log(response.data);
         const data = response.data.user_data; 
+
+        const goals = await api.get(`/goals?user_id=${user_id}`);
+        const currentGoals = goals.data;
+        console.log(currentGoals);
+        
         setMacros({
-          protein: { value: data.protein, target : calculatedGoals["Proteínas"] || manualGoals["Proteínas"] }, 
-          fat: { value: data.fat, target: calculatedGoals["Gorduras"] || manualGoals["Gorduras"] }, 
-          carbs: { value: data.carb, target: calculatedGoals["Carboidratos"] || manualGoals["Carboidratos"] } , 
+          protein: { value: data.protein, target : currentGoals.proteinGoal }, 
+          fat: { value: data.fat, target: currentGoals.fatGoal }, 
+          carbs: { value: data.carb, target: currentGoals.carbGoal }, 
         });
       } catch (error) {
         console.error('Erro ao buscar dados nutricionais:', error);
@@ -95,7 +100,7 @@ const MacroTracker: React.FC = () => {
         label="Proteínas"
         value={macros.protein.value}
         targetValue={macros.protein.target}
-        color="#4caf50"
+        color="#4caf50"                  
       />
       <MacroProgressBar
         label="Gorduras"

@@ -51,7 +51,7 @@ const Home: React.FC = () => {
       <div style={containerStyles}>
       <Card elevation={30} sx={{ width: '1100px', maxWidth: 1200, backgroundColor:'#F2F2F2', boxShadow:'200'  }}>
       <CardContent>
-        <CalorieCounter calories={1800} percentage={75} />
+        <CalorieCounter  />
         <AddMealButton onClick={() => {}} />
         <MealSection title="Café da Manhã" />
         <MealSection title="Almoço" />
