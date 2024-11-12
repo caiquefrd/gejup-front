@@ -59,10 +59,22 @@ const GoalTracker: React.FC<GoalProps> = ({ type, goal, current, isWeightGoal, o
     try {
       const updatedValue = isWeightGoal ? tempWeight : manualGoal;
       const user_id = localStorage.getItem("userId");
+      const weigthGoal = localStorage.getItem("weigthGoal");
+      const weigth = localStorage.get("weigth");
+      const proteinGoal = localStorage.getItem("protein");
+      const fatGoal = localStorage.getItem("fat");
+      const carbGoal = localStorage.getItem("carb");
+      const waterGoal = localStorage.getItem("water");
+      const caloriesGoal = localStorage.getItem("calories")
       await api.put(`/goals`, {
         user_id: user_id,
-        type,
-        value: updatedValue,
+        weigth,
+        weigthGoal,
+        proteinGoal,
+        fatGoal,
+        carbGoal,
+        waterGoal,
+        caloriesGoal,
       });
 
       if (isWeightGoal && tempWeight !== null) {

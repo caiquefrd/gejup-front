@@ -7,7 +7,7 @@ import Login from './components/LoginForm';
 import Register from './components/RegisterForm';
 import './index.css';
 import Acompanhamento from './views/Acompanhamento';
-import Badges from './views/badges';
+import Badges from './views/Badges';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

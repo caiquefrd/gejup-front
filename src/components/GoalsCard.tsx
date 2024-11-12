@@ -34,7 +34,13 @@ const GoalsCard: React.FC = () => {
           carbs: { value: data.carb, target: currentGoals.carbGoal },
           weigth: { value: currentGoals.weigth, target: currentGoals.weigthGoal },
           water: { value: 1200 , target: currentGoals.waterGoal },
-        });
+        })
+        localStorage.setItem("protein", currentGoals.proteinGoal);
+        localStorage.setItem("fat", currentGoals.fatGoal);
+        localStorage.setItem("carbs", currentGoals.carbGoal);
+        localStorage.setItem("weigth", currentGoals.weigth);
+        localStorage.setItem("weigthGoal", currentGoals.weigthGoal);
+        localStorage.setItem("water", currentGoals.waterGoal);
       } catch (error) {
         console.error("Erro ao buscar dados do backend", error);
       }

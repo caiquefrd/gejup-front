@@ -62,7 +62,7 @@ const Home: React.FC = () => {
       <div style={containerStyles}>
       <Card elevation={30} sx={{ width: '1100px', maxWidth: 1200, backgroundColor:'#F2F2F2', boxShadow:'200'  }}>
       <CardContent>
-        <CalorieCounter  />
+        <CalorieCounter />
         <AddMealButton
               userId={localStorage.getItem("userId") || ''}
               addMeal={handleMealAdded}
