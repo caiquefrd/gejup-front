@@ -86,7 +86,6 @@ const GoalTracker: React.FC<GoalProps> = ({ type, goal, current, isWeightGoal, o
       setOpen(false);
     } catch (error) {
       console.error("Erro ao atualizar a meta:", error);
-      alert("Erro ao atualizar a meta. Tente novamente.");
     }
   };
 
